@@ -21,7 +21,7 @@ Download/clone the code, use Visual Studio 2017 to open RoadStatus solution file
 
 ## Unit tests
 
-The application was developed using TDD and MSTest.
+The application was developed using TDD, MSTest and NSubstitutes.
 An attempt with BDD was made but abandoned due to .Net Core 2 and SpecFlow incompatibility.
 
 ### To run unit tests

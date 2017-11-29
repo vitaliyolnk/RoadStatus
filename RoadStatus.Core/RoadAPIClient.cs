@@ -12,6 +12,7 @@ namespace RoadStatus.Core
 {
     public class RoadAPIClient : ICallRoadAPI
     {
+        private IConfiguration _config;
         private string _apiUrl;
         private string _appId;
         private string _appKey;
@@ -20,13 +21,10 @@ namespace RoadStatus.Core
 
         public RoadAPIClient(IConfiguration config)
         {
-            _apiUrl = config["roadStatusApi"];
-            _appId = config["appId"];
-            _appKey = config["appKey"];
-            client.DefaultRequestHeaders.Accept.Clear();
-            client.DefaultRequestHeaders.Accept
-                .Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            _config = config;
+            SetClient();
         }
+        
         public async Task<RoadCorridor> GetRoadStatus(string roadId)
         {
             var serializer = new DataContractJsonSerializer(typeof(List<RoadCorridor>));
@@ -35,6 +33,9 @@ namespace RoadStatus.Core
             {
                 throw new ArgumentNullException(nameof(roadId));
             }
+            _apiUrl = _config["roadStatusApi"];
+            _appId = _config["appId"];
+            _appKey = _config["appKey"];
 
             var uri = new Uri($"{_apiUrl}{roadId}?app_id={_appId}&app_key={_appKey}");
 
@@ -55,6 +56,13 @@ namespace RoadStatus.Core
             var obj = await response.Content.ReadAsStringAsync();
 
             return JsonConvert.DeserializeObject<List<RoadCorridor>>(obj)[0];
+        }
+
+        private static void SetClient()
+        {
+            client.DefaultRequestHeaders.Accept.Clear();
+            client.DefaultRequestHeaders.Accept
+                .Add(new MediaTypeWithQualityHeaderValue("application/json"));
         }
     }
 }

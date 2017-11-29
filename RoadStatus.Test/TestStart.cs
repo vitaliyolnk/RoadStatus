@@ -22,6 +22,7 @@ namespace RoadStatus.Test
 
         public static void Dispose()
         {
+            Container.Disposer.Dispose();
             Container.Dispose();
         }
 
