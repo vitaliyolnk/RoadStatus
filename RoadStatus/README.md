@@ -1,4 +1,4 @@
-﻿# TfL Road Status API Client
+﻿# Road Status API Client
 A TfL WebApi client to check status of a road managed by TfL and print the following information:
 1. Road display name
 2. Road status
